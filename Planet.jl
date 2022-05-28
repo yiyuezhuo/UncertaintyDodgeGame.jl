@@ -2,11 +2,11 @@ using LinearAlgebra
 
 mutable struct Planet <: Starlight.Renderable
     function Planet(w, h; kw...)
-        instantiate!(new(); w=w, h=h, color=colorant"white", kw...)
+        instantiate!(new(); w=w, h=h, color=colorant"green", kw...)
     end
 end
 
-# Starlight.draw(p::Planet) = defaultDrawRect(p) # Don't show Planet's exact location.
+Starlight.draw(p::Planet) = defaultDrawRect(p) # Don't show Planet's exact location.
 
 function Starlight.awake!(p::Planet)
     hw = p.w / 2
@@ -47,8 +47,8 @@ function create_satellites!(p::Planet)
     end
 end
 
-const σ_acc_noise_x = 3
-const σ_acc_noise_y = 10
+const σ_acc_noise_x = 180
+const σ_acc_noise_y = 600
 const obs_noise_x = 10
 const obs_noise_y = 10
 

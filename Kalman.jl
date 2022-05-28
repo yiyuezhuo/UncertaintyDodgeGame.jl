@@ -1,7 +1,8 @@
 using KalmanFilters
 
 function Q_for(Δt, σ_acc_noise)
-    [Δt^2/2; Δt; 1] * [Δt^2/2 Δt 1] * σ_acc_noise^2
+    qv = QV_for(Δt, σ_acc_noise)
+    return qv * qv'
 end
 
 function Q2_for(Δt, σ_acc_noise_x, σ_acc_noise_y)
