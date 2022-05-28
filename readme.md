@@ -12,6 +12,11 @@ julia Game.jl
 
 Red points are noisy observations location, 8 points are used to portray the contour of the 1σ area of the Kalman Filter. So it's possible the target is outside of the area due to properties of Kalman Filter (probability or "failure" to handle big scale maneuver).
 
+* Blue: The player.
+* White: One sigma uncertainty region for a obstacle.
+* Red: Noisy observation for a obstacle.
+* Green: (Enable manually) Exact location for a obstacle.
+
 ## Formulations
 
 The state of a obstacle is denoted by a 6-vector $X = (p_x, v_x, a_x, p_y, v_y, a_v)$ (position, velocity and acceleration of $x$ and $y$). The movement are driven by a random initial speed and a random "force" (the the acceleration follow a Wiener process).
@@ -37,7 +42,7 @@ Process noise:
 $$
 Q_1 =
 \begin{bmatrix}
-\Delta t^2 / 2 & \Delta t & 1
+\Delta t^3 / 6 & \Delta t^2 / 2 & \Delta t
 \end{bmatrix}'
 $$
 

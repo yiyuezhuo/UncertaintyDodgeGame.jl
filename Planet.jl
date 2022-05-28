@@ -1,4 +1,3 @@
-using LinearAlgebra
 
 mutable struct Planet <: Starlight.Renderable
     function Planet(w, h; kw...)
@@ -65,7 +64,7 @@ function newball()
             std_x=sqrt(c[1,1]), std_y=sqrt(c[4,4]), 
             # last_obs_t=0.0, 
             mu=mu
-        )    
+        )
     end
 
     println("newball middle")
@@ -73,7 +72,7 @@ function newball()
     create_satellites!(p)
     # sync_std_to_satellites!(p)
     @show p.id
-    TS_BtSetLinearVelocity(p.id, -160, 0, 0)
+    TS_BtSetLinearVelocity(p.id, vel[1], vel[2], 0)
     return p
 end
 
