@@ -5,12 +5,16 @@ mutable struct Planet <: Starlight.Renderable
     end
 end
 
-Starlight.draw(p::Planet) = defaultDrawRect(p) # Don't show Planet's exact location.
+function Starlight.draw(p::Planet)
+    if controller.reveal_exact
+        defaultDrawRect(p) # Don't show Planet's exact location.
+    end
+end
 
 function Starlight.awake!(p::Planet)
     hw = p.w / 2
     hh = p.h / 2
-    @show hw hh
+    # @show hw hh
     addTriggerBox!(p, hw, hh, 1, p.pos.x + hw, p.pos.y + hh, 0, 0, 0, 0)
 end  
 
@@ -52,8 +56,18 @@ const obs_noise_x = 10
 const obs_noise_y = 10
 
 function newball()
+    #=
     posx = 750.
     posy = 700. * rand() + 50
+    =#
+    if rand() < 0.5
+        posx = rand() < 0.5 ? 50 : 750
+        posy = 700 * rand() + 50
+    else
+        posx = 700 * rand() + 50
+        posy = rand() < 0.5 ? 50 : 750
+    end
+
     vel = normalize([400 - posx, 400 - posy]) * 160
 
     p = let x_init=[posx, vel[1], 0., posy, vel[2], 0.]
@@ -67,11 +81,11 @@ function newball()
         )
     end
 
-    println("newball middle")
+    # println("newball middle")
 
     create_satellites!(p)
     # sync_std_to_satellites!(p)
-    @show p.id
+    # @show p.id
     TS_BtSetLinearVelocity(p.id, vel[1], vel[2], 0)
     return p
 end
@@ -112,11 +126,11 @@ end
 function Starlight.handleMessage!(p::Planet, col::TS_CollisionEvent)
     otherId = other(p, col)
     # other = getEntityById(otherId)
-    println("TS_CollisionEvent: p.id=$(p.id) otherId=$otherId")
+    println("(Planet) TS_CollisionEvent: p.id=$(p.id) otherId=$otherId")
     # other = getEntityById(otherId)
     # println("other=$other typeof(other)=$(typeof(other))")
     # if other.
-    if otherId ∈ destory_set # TODO: refactor this inversed global dependency
+    if otherId ∈ wall_set # TODO: refactor this inversed global dependency
         destroy!(p)
         # oneshot!(clk(), wait_and_start_new_round)
     end

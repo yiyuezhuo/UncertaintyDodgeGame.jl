@@ -1,8 +1,6 @@
 mutable struct Controller <: Starlight.Entity
     function Controller() 
-      instantiate!(new(); ball=nothing, w=false, s=false, up=false, down=false, 
-        p1TouchingTopWall=false, p2TouchingTopWall=false, 
-        p1TouchingBottomWall=false, p2TouchingBottomWall=false)
+      instantiate!(new(); reveal_exact=false)
     end
 end
 
@@ -22,8 +20,21 @@ function Starlight.handleMessage!(p::Controller, q::SDL_QuitEvent)
 end
 
 function Starlight.handleMessage!(p::Controller, key::SDL_KeyboardEvent)
-    if key.keysym.scancode == SDL_SCANCODE_SPACE && key.state == SDL_PRESSED
-      p.ball = newball()
+    pressed =  key.state == SDL_PRESSED
+    code = key.keysym.scancode
+    if pressed
+        if code == SDL_SCANCODE_SPACE && key.state == SDL_PRESSED
+            # p.ball = newball()
+            newball()
+        elseif code == SDL_SCANCODE_1 # toggle hidden exact location visibility
+            p.reveal_exact = !p.reveal_exact
+        end
+    end 
+end
+
+function Starlight.update!(p::Controller, Δ::AbstractFloat)
+    if rand() < Δ
+        newball()
     end
 end
 

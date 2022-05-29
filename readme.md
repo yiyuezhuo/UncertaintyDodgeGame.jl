@@ -17,6 +17,11 @@ Red points are noisy observations location, 8 points are used to portray the con
 * Red: Noisy observation for a obstacle.
 * Green: (Enable manually) Exact location for a obstacle.
 
+## Tactics
+
+* If you must choose a uncertainty region to pass, a boarder region is safer, since the obstacle is "distributed" more sparsely and your path have a lower probability to collide with it.
+* The obstacles are always generated from border and point to the center. So if you are near the border, you will take the risk of a surprise of obstacle generated. While in center region, the prior expected density is higher, but the risk can be avoid by agile control to some extend.
+
 ## Formulations
 
 The state of a obstacle is denoted by a 6-vector $X = (p_x, v_x, a_x, p_y, v_y, a_v)$ (position, velocity and acceleration of $x$ and $y$). The movement are driven by a random initial speed and a random "force" (the the acceleration follow a Wiener process).

@@ -20,6 +20,8 @@ end
 
 function Starlight.shutdown!(p::Meteor)
     removePhysicsObject!(p)
+
+    unlistenFrom(p, SDL_KeyboardEvent)
 end  
 
 function Starlight.handleMessage!(c::Meteor, k::SDL_KeyboardEvent)
@@ -81,29 +83,10 @@ end
 function Starlight.handleMessage!(p::Meteor, col::TS_CollisionEvent)
     otherId = other(p, col)
     println("(Meteor) TS_CollisionEvent: p.id=$(p.id) otherId=$otherId")
-    if otherId ∈ destory_set # TODO: refactor this inversed global dependency
+    if otherId ∈ wall_set # TODO: refactor this inversed global dependency
         # destroy!(p)
         # TODO: what should it do? block or decrease score?
-        # println("reprojection")
-        # reprojection(p)
     else # planets
         println("Hit planet!")
     end
 end
-
-#=
-function reprojection(p::Meteor)
-    if p.pos.x < 0
-        p.pos.x = 0
-    end
-    if p.pos.x + p.w > 800
-        pos.pos.x = 800 - p.w
-    end
-    if p.pos.y < 0
-        p.pos.y = 0
-    end
-    if p.pos.y + p.h > 800
-        p.pos.y = 800 - p.h
-    end
-end
-=#
