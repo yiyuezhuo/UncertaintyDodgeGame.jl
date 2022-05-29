@@ -9,6 +9,7 @@ include("BoundaryWall.jl")
 include("Satellite.jl")
 include("Planet.jl")
 include("Meteor.jl")
+include("Label.jl")
 include("Controller.jl")
 
 app = App(; wdth=800, hght=800)
@@ -29,5 +30,11 @@ for wall in [wall_left, wall_right, wall_top, wall_bottom]
 end
 
 meteor = Meteor(30, 30;pos=XYZ(400, 400))
+
+CellphoneString("Ar:move,Sp:gen,1:exact,2:auto,3:slower,4:faster,5:area", false; scale=XYZ(2, 2), pos=XYZ(0, 783))
+
+time_text = CellphoneString("", false; scale=XYZ(2, 2), pos=XYZ(0, 0))
+hit_text = CellphoneString("", false; scale=XYZ(2, 2), pos=XYZ(0, 17))
+ranking_text = CellphoneString("", false; scale=XYZ(2, 2), pos=XYZ(0, 34))
 
 run!(app)

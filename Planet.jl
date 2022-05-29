@@ -74,6 +74,9 @@ function newball()
         measurement = H2 * x_init + [randn() * obs_noise_x, randn() * obs_noise_y]
         mu = measurement_update(x_init, P_init, measurement, H2, R2_for(obs_noise_x, obs_noise_y))
         c = get_covariance(mu)
+
+        ObsLabel(5, 5; pos=XYZ(measurement[1], measurement[2]), acc_t=0)
+
         Planet(30, 30; pos=XYZ(round(Int, posx), round(Int, posy)), x=x_init, satellites=Any[], 
             std_x=sqrt(c[1,1]), std_y=sqrt(c[4,4]), 
             # last_obs_t=0.0, 
@@ -103,7 +106,7 @@ function Starlight.update!(p::Planet, Δ::AbstractFloat)
         Q2 = Q2_for(Δt, σ_acc_noise_x, σ_acc_noise_y)
         mu = time_update(get_state(mu), get_covariance(mu), F2_for(Δt), Q2)
 
-        if rand() < Δt
+        if rand() < (Δt * 0.75)
             measurement = [p.pos.x + randn() * obs_noise_x, p.pos.y + randn() * obs_noise_y]
             R2 = R2_for(obs_noise_x, obs_noise_y)
             mu = measurement_update(get_state(mu), get_covariance(mu), measurement, H2, R2)

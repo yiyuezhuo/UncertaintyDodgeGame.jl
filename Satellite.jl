@@ -4,7 +4,12 @@ mutable struct Satellite <: Starlight.Renderable
     end
 end
 
-Starlight.draw(p::Satellite) = defaultDrawRect(p)
+# Starlight.draw(p::Satellite) = defaultDrawRect(p)
+function Starlight.draw(p::Satellite)
+    if controller.uncertainty_area
+        defaultDrawRect(p) # Don't show Planet's exact location.
+    end
+end
 
 function Starlight.update!(p::Satellite, Δ::AbstractFloat)
     #=

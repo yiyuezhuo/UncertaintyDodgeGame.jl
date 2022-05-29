@@ -88,5 +88,6 @@ function Starlight.handleMessage!(p::Meteor, col::TS_CollisionEvent)
         # TODO: what should it do? block or decrease score?
     else # planets
         println("Hit planet!")
+        count_hit!(controller)
     end
 end
